@@ -14,6 +14,7 @@ float parse_first_number(const std::string& line) {
 }
 
 // CPU: возвращает загрузку в процентах (0-100)
+extern "C" {
 float get_cpu_usage() {
     static std::vector<unsigned long long> prev_cpu_times(10, 0);
     
@@ -39,7 +40,7 @@ float get_cpu_usage() {
     
     prev_cpu_times = cpu_times;
     return usage;
-}
+}}
 
 // RAM: возвращает used и free в MB
 std::unordered_map<std::string, float> get_memory_info() {
@@ -160,4 +161,7 @@ std::unordered_map<std::string, float> get_metrics() {
     }
     
     return metrics;
+}
+extern "C" float get_cpu_usage_exported() {
+    return get_cpu_usage();
 }
