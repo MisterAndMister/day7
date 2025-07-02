@@ -1,4 +1,4 @@
-import psutil  # Для альтернативного получения метрик, если C++ недоступен
+import psutil
 
 def check_alerts(cpu_threshold=90, ram_threshold=10):
     cpu = psutil.cpu_percent()

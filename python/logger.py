@@ -3,7 +3,6 @@ import time
 from datetime import datetime
 from ctypes import CDLL, c_float
 
-# Загрузка C++ библиотеки
 lib = CDLL('./cpp/build/libsysmon.so')
 lib.get_cpu_usage.restype = c_float
 lib.get_ram_used.restype = c_float

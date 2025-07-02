@@ -5,7 +5,6 @@
 #include <sstream>
 #include <algorithm>
 
-// Утилитарная функция: чтение первого числа из строки
 static float parse_first_number(const std::string& line) {
     std::istringstream iss(line);
     float value;
@@ -13,12 +12,10 @@ static float parse_first_number(const std::string& line) {
     return value;
 }
 
-// Проверка начала строки (аналог starts_with для C++17 и ниже)
 static bool starts_with(const std::string& str, const std::string& prefix) {
     return str.rfind(prefix, 0) == 0;
 }
 
-// CPU: возвращает загрузку в процентах (0-100)
 static float real_get_cpu_usage() {
     static bool first_call = true;
     static std::vector<unsigned long long> prev_cpu_times(10, 0);
@@ -37,7 +34,7 @@ static float real_get_cpu_usage() {
     if (first_call) {
         prev_cpu_times = cpu_times;
         first_call = false;
-        return 0.0f;  // Первый вызов - возвращаем 0%
+        return 0.0f;  
     }
 
     unsigned long long total_delta = 0;
@@ -52,7 +49,6 @@ static float real_get_cpu_usage() {
     return 100.0f * (1.0f - static_cast<float>(idle_delta) / total_delta);
 }
 
-// RAM: возвращает использованную память в MB
 static float real_get_ram_used() {
     std::ifstream file("/proc/meminfo");
     if (!file.is_open()) return -1.0f;  // Ошибка чтения
@@ -76,7 +72,6 @@ static float real_get_ram_used() {
     return (used < 0.0f) ? 0.0f : used;
 }
 
-// Экспортируемые функции для Python
 extern "C" {
     float get_cpu_usage() {
         return real_get_cpu_usage();

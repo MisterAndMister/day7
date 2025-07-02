@@ -5,7 +5,6 @@
 #include <fstream>
 #include <sstream>
 
-// Прототипы функций
 float parse_first_number(const std::string& line);
 float get_cpu_usage();
 std::unordered_map<std::string, float> get_memory_info();

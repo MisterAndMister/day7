@@ -1,10 +1,8 @@
-#!/usr/bin/env python3
 import curses
 from ctypes import CDLL, c_float
 import os
 import time
 
-# Инициализация C++ библиотеки
 lib_path = os.path.abspath("cpp/build/libsysmon.so")
 try:
     lib = CDLL(lib_path)
@@ -23,12 +21,10 @@ def main(stdscr):
     while True:
         stdscr.clear()
         
-        # Получаем метрики
         try:
             cpu = lib.get_cpu_usage()
             ram = lib.get_ram_used()
             
-            # Проверка на корректность значений
             if cpu < 0 or cpu > 100:
                 raise ValueError(f"Invalid CPU value: {cpu}")
             if ram < 0:
@@ -40,7 +36,6 @@ def main(stdscr):
             time.sleep(1)
             continue
         
-        # Отрисовка интерфейса
         stdscr.addstr(0, 0, "System Monitor (Q to quit)")
         stdscr.addstr(2, 0, f"CPU Usage: {cpu:.1f}%")
         stdscr.addstr(3, 0, f"RAM Used: {ram:.1f} MB")
@@ -48,7 +43,6 @@ def main(stdscr):
         stdscr.addstr(6, 0, f"- Library: {lib_path}")
         stdscr.addstr(7, 0, f"- Last update: {time.strftime('%H:%M:%S')}")
         
-        # Проверка выхода
         if stdscr.getch() == ord('q'):
             break
             
