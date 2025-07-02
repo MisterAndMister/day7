@@ -1,4 +1,3 @@
-// sysmon.cpp
 #include <fstream>
 #include <string>
 #include <unordered_map>
@@ -12,6 +11,11 @@ static float parse_first_number(const std::string& line) {
     float value;
     iss >> value;
     return value;
+}
+
+// Проверка начала строки (аналог starts_with для C++17 и ниже)
+static bool starts_with(const std::string& str, const std::string& prefix) {
+    return str.rfind(prefix, 0) == 0;
 }
 
 // CPU: возвращает загрузку в процентах (0-100)
@@ -57,13 +61,13 @@ static float real_get_ram_used() {
     std::string line;
     
     while (std::getline(file, line)) {
-        if (line.starts_with("MemTotal:")) {
+        if (starts_with(line, "MemTotal:")) {
             total = parse_first_number(line) / 1024.0f;
-        } else if (line.starts_with("MemFree:")) {
+        } else if (starts_with(line, "MemFree:")) {
             free = parse_first_number(line) / 1024.0f;
-        } else if (line.starts_with("Buffers:")) {
+        } else if (starts_with(line, "Buffers:")) {
             buffers = parse_first_number(line) / 1024.0f;
-        } else if (line.starts_with("Cached:")) {
+        } else if (starts_with(line, "Cached:")) {
             cached = parse_first_number(line) / 1024.0f;
         }
     }
@@ -71,7 +75,8 @@ static float real_get_ram_used() {
     float used = total - free - buffers - cached;
     return (used < 0.0f) ? 0.0f : used;
 }
-// Экспортируемые функции для Python (без C++ name-mangling)
+
+// Экспортируемые функции для Python
 extern "C" {
     float get_cpu_usage() {
         return real_get_cpu_usage();
