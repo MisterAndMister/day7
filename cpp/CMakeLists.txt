@@ -4,13 +4,13 @@ project(sysmon LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
-# Собираем shared библиотеку libsysmon.so из источников
+# Собираем shared библиотеку libsysmon.so из data_collector.cpp
 add_library(sysmon SHARED
     data_collector.cpp
-    sysmon.cpp
 )
 
 # Пути для заголовков
+# Если есть заголовки в include/, можно добавить:
 target_include_directories(sysmon
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
